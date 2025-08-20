@@ -1,4 +1,4 @@
-from flask import Flask, jsonify
+from flask import Flask, jsonify, abort
 
 
 # Create a Flask application instance
@@ -28,6 +28,14 @@ def welcome():
     """ A welcome message to confirm the api is running."""
     return jsonify(
         {"message": "Welcome to the To-Do List API!"})
+
+# Second API endpoint to get all tasks.
+@todo_app.route('/tasks', methods=['GET'])
+def get_tasks():
+    return jsonify(
+        {
+            'tasks': tasks
+        })
 
 
 # This part is a god practice: it ensures the server runs only
