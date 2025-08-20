@@ -39,7 +39,7 @@ def get_tasks():
 
 
 # Third API endpoint to get a single task.
-@todo_app.route('task/<int:task_id>', methods=['GET'])
+@todo_app.route('/task/<int:task_id>', methods=['GET'])
 def get_task(task_id):
     # Find the task with the matching ID in our list.
 
