@@ -108,6 +108,24 @@ def update_task(task_id):
         })
 
 
+# Sixth API endpoint to delete a specific task.
+@todo_app.route('/tasks/<int:task_id>', methods=['DELETE'])
+def delete_task(task_id):
+    # Find the task to delete
+    task = [task for task in tasks if task['id'] == task_id]
+    if len(task) == 0:
+        abort(404) # Task not found
+
+    # Remove the task from the list
+    tasks.remove(task[0])
+
+    # Return a success message
+    return jsonify(
+        {
+            'result': True
+        })
+
+
 # This part is a god practice: it ensures the server runs only
 # when the script is executed directly ( and not when imported).
 if __name__ == "__main__":
