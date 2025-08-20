@@ -52,6 +52,31 @@ def get_task(task_id):
             'task': task[0]
         })
 
+
+# Fourth API endpoint to create a new task.
+@todo_app.route('/tasks', methods=['POST'])
+def create_task():
+    # Check if the request has json data, and if the 'title' key is missing.
+    if not request.json or not 'title' in request.json:
+        abort(400) # Bad Request.
+
+    # Create the new task dictionary.
+    new_task = {
+        'id': tasks[-1]['id'] + 1, 
+        'title': request.json['title'],
+        'description': request.json.get('description', ""),
+        'completed': False
+    }
+
+    # Add the new task to our list.
+    tasks.append(new_task)
+
+    # Return the new task along with a 201 Created Status code
+    return jsonify(
+        {
+            'task': new_task
+        }), 201
+
 # This part is a god practice: it ensures the server runs only
 # when the script is executed directly ( and not when imported).
 if __name__ == "__main__":
