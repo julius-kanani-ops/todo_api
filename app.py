@@ -77,6 +77,37 @@ def create_task():
             'task': new_task
         }), 201
 
+
+# Fifth API endpoint, to find a specific task, and update it.
+@todo_app.route('/tasks/<int:task_id>', methods=['PUT'])
+def update_task(task_id):
+    # Find the task to update.
+    task = [task for task in tasks if task['id'] == task_id]
+    if len(task) == 0:
+        abort(404) # Task not found.
+
+    # Basic Validation of the incoming data
+    if not request.json:
+        abort(400, description="Request must be JSON")
+
+    if 'title' in request.json and not isinstance(request.json['title'], str):
+        abort(400, description="Title must be string.")
+
+    if 'completed' in request.json and not isinstance(requested.json['completed'], bool):
+        abort(400, description="Completed must be a boolean.")
+
+    # Update the task with the new values.
+    task[0]['title'] = request.json.get('title', task[0]['title'])
+    task[0]['description'] = request.json.get('description', task[0]['description'])
+    task[0]['completed'] = request.json.get('completed', task[0]['completed'])
+
+    # Return the updated task.
+    return jsonify(
+        {
+            'task': task[0]
+        })
+
+
 # This part is a god practice: it ensures the server runs only
 # when the script is executed directly ( and not when imported).
 if __name__ == "__main__":
