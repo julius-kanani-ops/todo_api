@@ -60,9 +60,15 @@ def create_task():
     if not request.json or not 'title' in request.json:
         abort(400) # Bad Request.
 
+    # Determine the new task's ID
+    if tasks:
+        new_id = tasks[-1]['id'] + 1
+    else:
+        new_id = 1 # If the list is empty, start with ID 1.
+
     # Create the new task dictionary.
     new_task = {
-        'id': tasks[-1]['id'] + 1, 
+        'id': new_id, 
         'title': request.json['title'],
         'description': request.json.get('description', ""),
         'completed': False
