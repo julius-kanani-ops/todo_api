@@ -4,6 +4,24 @@ from flask import Flask, jsonify
 # Create a Flask application instance
 todo_app = Flask(__name__)
 
+# In-memory database.
+tasks = [
+    {
+        'id': 1,
+        'title': u'Buy groceries',
+        'description': u'Milk, Cheese, Pizza, Fruit, Tylenol',
+        'completed': False
+    },
+
+    {
+        'id': 2,
+        'title': u'Learn Python',
+        'description': u'Need to find a good Python tutorial on the web',
+        'completed': False
+    }
+]
+
+
 # Define our first API endpoint
 @todo_app.route("/", methods=["GET"])
 def welcome():
