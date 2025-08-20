@@ -38,6 +38,20 @@ def get_tasks():
         })
 
 
+# Third API endpoint to get a single task.
+@todo_app.route('task/<int:task_id>', methods=['GET'])
+def get_task(task_id):
+    # Find the task with the matching ID in our list.
+
+    task = [task for task in tasks if [task['id'] == task_id]
+    if len(task) == 0: # If no task is found, the list will be empty.
+        abort(404)
+
+    return jsonify(
+        {
+            'task': task[0]
+        })
+
 # This part is a god practice: it ensures the server runs only
 # when the script is executed directly ( and not when imported).
 if __name__ == "__main__":
