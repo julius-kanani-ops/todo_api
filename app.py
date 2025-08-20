@@ -93,7 +93,7 @@ def update_task(task_id):
     if 'title' in request.json and not isinstance(request.json['title'], str):
         abort(400, description="Title must be string.")
 
-    if 'completed' in request.json and not isinstance(requested.json['completed'], bool):
+    if 'completed' in request.json and not isinstance(request.json['completed'], bool):
         abort(400, description="Completed must be a boolean.")
 
     # Update the task with the new values.
