@@ -34,7 +34,7 @@ def get_tasks():
 
 
 # Third API endpoint to get a single task.
-@main.route('/task/<int:task_id>', methods=['GET'])
+@main.route('/tasks/<int:task_id>', methods=['GET'])
 def get_task(task_id):
     # Find the task with the matching ID in our list.
 
