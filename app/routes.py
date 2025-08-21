@@ -123,31 +123,45 @@ def create_task():
 # Fifth API endpoint, to find a specific task, and update it.
 @main.route('/tasks/<int:task_id>', methods=['PUT'])
 def update_task(task_id):
-    # Find the task to update.
-    task = [task for task in tasks if task['id'] == task_id]
-    if len(task) == 0:
-        abort(404) # Task not found.
+    """
+    Update an existing task by its ID.
 
-    # Basic Validation of the incoming data
+    This endpoint handles PUT requests to `/tasks/<task_id>` and
+    updates the specified task with the provided JSON payload.
+    If the task does not exist, a 404 error is returned.
+
+    Request JSON (partial or full):
+        {
+            "title": "Updated title",
+            "description": "Updated description",
+            "completed": true/false
+        }
+
+    Args:
+        task_id (int): The unique identifier of the task to update.
+
+    Returns:
+        Response (flask.Response): A JSON object with the updated task:
+            {
+                "task": {task_data}
+            }
+
+    Raises:
+        404 Not Found: If no task with the given ID exists.
+        400 Bad Request: If the request body is missing or not JSON.
+    """
+    task = Task.query.get(task_id)
+    if task is None:
+        abort(404, description=f"Task with id {task_id} not found")
     if not request.json:
         abort(400, description="Request must be JSON")
 
-    if 'title' in request.json and not isinstance(request.json['title'], str):
-        abort(400, description="Title must be string.")
+    task.title = request.json.get('title', task.title)
+    task.description = request.json.get('description', task.description)
+    task.completed = request.json.get('completed', task.completed)
 
-    if 'completed' in request.json and not isinstance(request.json['completed'], bool):
-        abort(400, description="Completed must be a boolean.")
-
-    # Update the task with the new values.
-    task[0]['title'] = request.json.get('title', task[0]['title'])
-    task[0]['description'] = request.json.get('description', task[0]['description'])
-    task[0]['completed'] = request.json.get('completed', task[0]['completed'])
-
-    # Return the updated task.
-    return jsonify(
-        {
-            'task': task[0]
-        })
+    db.session.commit()
+    return jsonify({'task': task.to_dict()})
 
 
 # Sixth API endpoint to delete a specific task.
