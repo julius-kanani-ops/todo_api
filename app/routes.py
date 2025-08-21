@@ -1,9 +1,13 @@
 #!/usr/bin/python3
 
 
-from app import app, db
-from app.models import Task
-from flask import jsonify, abort, request
+from .models import Task
+from flask import Blueprint, jsonify, abort, request
+from . import db
+
+
+# Create a Blueprint object
+main = Blueprint('main', __name__)
 
 
 # Dummy data (for now, so the app still runs before we rewrite)
@@ -14,14 +18,14 @@ tasks = [
 
 
 # Define our first API endpoint
-@todo_app.route("/", methods=["GET"])
+@main.route("/", methods=["GET"])
 def welcome():
     """ A welcome message to confirm the api is running."""
     return jsonify(
         {"message": "Welcome to the To-Do List API!"})
 
 # Second API endpoint to get all tasks.
-@todo_app.route('/tasks', methods=['GET'])
+@main.route('/tasks', methods=['GET'])
 def get_tasks():
     return jsonify(
         {
@@ -30,7 +34,7 @@ def get_tasks():
 
 
 # Third API endpoint to get a single task.
-@todo_app.route('/task/<int:task_id>', methods=['GET'])
+@main.route('/task/<int:task_id>', methods=['GET'])
 def get_task(task_id):
     # Find the task with the matching ID in our list.
 
@@ -45,7 +49,7 @@ def get_task(task_id):
 
 
 # Fourth API endpoint to create a new task.
-@todo_app.route('/tasks', methods=['POST'])
+@main.route('/tasks', methods=['POST'])
 def create_task():
     # Check if the request has json data, and if the 'title' key is missing.
     if not request.json or not 'title' in request.json:
@@ -76,7 +80,7 @@ def create_task():
 
 
 # Fifth API endpoint, to find a specific task, and update it.
-@todo_app.route('/tasks/<int:task_id>', methods=['PUT'])
+@main.route('/tasks/<int:task_id>', methods=['PUT'])
 def update_task(task_id):
     # Find the task to update.
     task = [task for task in tasks if task['id'] == task_id]
@@ -106,7 +110,7 @@ def update_task(task_id):
 
 
 # Sixth API endpoint to delete a specific task.
-@todo_app.route('/tasks/<int:task_id>', methods=['DELETE'])
+@main.route('/tasks/<int:task_id>', methods=['DELETE'])
 def delete_task(task_id):
     # Find the task to delete
     task = [task for task in tasks if task['id'] == task_id]
