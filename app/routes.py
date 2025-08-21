@@ -56,16 +56,29 @@ def get_tasks():
 # Third API endpoint to get a single task.
 @main.route('/tasks/<int:task_id>', methods=['GET'])
 def get_task(task_id):
-    # Find the task with the matching ID in our list.
+    """
+    Retrieve a single task by its ID.
 
-    task = [task for task in tasks if task['id'] == task_id]
-    if len(task) == 0: # If no task is found, the list will be empty.
-        abort(404)
+    This endpoint handles GET requests to `/tasks/<task_id>` and
+    returns the task details as JSON if found. If the task does not exist,
+    it returns a 404 error with a descriptive message.
 
-    return jsonify(
-        {
-            'task': task[0]
-        })
+    Args:
+        task_id (int): The unique identifier of the task.
+
+    Returns:
+        Response (flask.Response): A JSON object with the structure:
+            {
+                "task": {task_data}
+            }
+
+    Raises:
+        404 Not Found: If no task with the given ID exists.
+    """
+    task = Task.query.get(task_id)
+    if task is None:
+        abort(404, description=f"Task with id {task_id} not found")
+    return jsonify({'task': task.to_dict()})
 
 
 # Fourth API endpoint to create a new task.
