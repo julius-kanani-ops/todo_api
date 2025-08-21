@@ -3,6 +3,10 @@
 
 from app import create_app, db
 from app.models import Task
+from dotenv import load_dotenv
+
+
+load_dotenv() # Load variables from .env
 
 
 app = create_app()
