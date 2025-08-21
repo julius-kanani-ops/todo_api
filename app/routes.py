@@ -84,32 +84,40 @@ def get_task(task_id):
 # Fourth API endpoint to create a new task.
 @main.route('/tasks', methods=['POST'])
 def create_task():
-    # Check if the request has json data, and if the 'title' key is missing.
-    if not request.json or not 'title' in request.json:
-        abort(400) # Bad Request.
+    """
+    Create a new task.
 
-    # Determine the new task's ID
-    if tasks:
-        new_id = tasks[-1]['id'] + 1
-    else:
-        new_id = 1 # If the list is empty, start with ID 1.
+    This endpoint handles POST requests to `/tasks` and creates
+    a new task using the provided JSON payload. The payload must
+    include a `title`, and can optionally include a `description`.
 
-    # Create the new task dictionary.
-    new_task = {
-        'id': new_id,
-        'title': request.json['title'],
-        'description': request.json.get('description', ""),
-        'completed': False
-    }
-
-    # Add the new task to our list.
-    tasks.append(new_task)
-
-    # Return the new task along with a 201 Created Status code
-    return jsonify(
+    Request JSON:
         {
-            'task': new_task
-        }), 201
+            "title": "Task title",
+            "description": "Optional task description"
+        }
+
+    Returns:
+        Response (flask.Response): A JSON object with the newly
+        created task and HTTP status code 201.
+            {
+                "task": {task_data}
+            }
+
+    Raises:
+        400 Bad Request: If the request JSON is missing or the
+        `title` field is not provided.
+    """
+    if not request.json or 'title' not in request.json:
+        abort(400, description="Request must contain a title")
+
+    new_task = Task(
+        title=request.json['title'],
+        description=request.json.get('description', "")
+    )
+    db.session.add(new_task)
+    db.session.commit()
+    return jsonify({'task': new_task.to_dict()}), 201
 
 
 # Fifth API endpoint, to find a specific task, and update it.
