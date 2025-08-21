@@ -18,9 +18,11 @@ def create_app(config_class=Config):
     # Initialize extensions with the app
     db.init_app(app)
 
-    # This is a common pattern to avoid circular imports.
-    # I import the routes here, after 'app' and 'db' are created.
-    from app import routes, models
+    # Import the Blueprint from the routes file.
+    from .routes import main as main_blueprint
+
+    # Register the Blueprint with the flask app.
+    app.register_blueprint(main_blueprint)
 
 
     return app
