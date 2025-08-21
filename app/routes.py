@@ -27,9 +27,29 @@ def welcome():
 # Second API endpoint to get all tasks.
 @main.route('/tasks', methods=['GET'])
 def get_tasks():
+    """
+    Retrieve all tasks from the database.
+
+    This endpoint handles GET requests to `/tasks` and returns
+    a JSON response containing a list of all tasks in the system.
+
+    Returns:
+        Response (flask.Response): A JSON object with the structure:
+            {
+                "tasks": [
+                    {task_1_data},
+                    {task_2_data},
+                    ...
+                ]
+            }
+    """
+
+    all_tasks = Task.query.all()
+    tasks_list = [task.to_dict() for task in all_tasks]
+
     return jsonify(
         {
-            'tasks': tasks
+            'tasks': tasks_list
         })
 
 
