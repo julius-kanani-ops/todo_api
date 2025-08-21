@@ -1,4 +1,4 @@
 todo_venv/
 __pycache__/
 app/__pycache__/
-
+tasks.db
