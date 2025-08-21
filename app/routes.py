@@ -167,17 +167,29 @@ def update_task(task_id):
 # Sixth API endpoint to delete a specific task.
 @main.route('/tasks/<int:task_id>', methods=['DELETE'])
 def delete_task(task_id):
-    # Find the task to delete
-    task = [task for task in tasks if task['id'] == task_id]
-    if len(task) == 0:
-        abort(404) # Task not found
+    """
+    Delete a task by its ID.
 
-    # Remove the task from the list
-    tasks.remove(task[0])
+    This endpoint handles DELETE requests to `/tasks/<task_id>` and
+    removes the specified task from the database. If the task does
+    not exist, a 404 error is returned.
 
-    # Return a success message
-    return jsonify(
-        {
-            'result': True
-        })
+    Args:
+        task_id (int): The unique identifier of the task to delete.
 
+    Returns:
+        Response (flask.Response): A JSON object confirming deletion:
+            {
+                "result": true
+            }
+
+    Raises:
+        404 Not Found: If no task with the given ID exists.
+    """
+    task = Task.query.get(task_id)
+    if task is None:
+        abort(404, description=f"Task with id {task_id} not found")
+
+    db.session.delete(task)
+    db.session.commit()
+    return jsonify({'result': True})
