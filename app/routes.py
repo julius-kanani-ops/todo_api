@@ -13,7 +13,7 @@ tasks = [
 ]
 
 
- Define our first API endpoint
+Define our first API endpoint
 @todo_app.route("/", methods=["GET"])
 def welcome():
     """ A welcome message to confirm the api is running."""
