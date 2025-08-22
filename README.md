@@ -64,6 +64,7 @@ Follow these steps to set up and run the project on your local machine.
 ```bash
 git clone https://github.com/julius-kanani-ops/todo_api.git
 cd todo_api
+```
 
 ### 2. Create and Activate a Virtual Environment
 
@@ -84,6 +85,7 @@ Install all the required packages from the `requirements.txt` file.
 
 ```bash
 pip install -r requirements.txt
+```
 
 ### 4. Configure the Environment
 
@@ -114,5 +116,6 @@ You can now start the local development server.
 
 ```bash
 python run.py
+```
 
 The API will be running at `http://127.0.0.1:5000`. You can now use a tool like [Postman](https://www.postman.com/) to interact with your local API endpoints.
