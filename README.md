@@ -2,7 +2,7 @@
 
 A complete and production-ready REST API for managing a simple to-do list. This project was built from scratch using Python, Flask, and SQLAlchemy, following modern software engineering best practices. It is designed to be a robust backend service for any front-end application (web, mobile, etc.).
 
-The live API is deployed on Render and can be accessed at: `https://todo-api-qabf.onrender.com/`
+The live API is deployed on Render and can be accessed at: [todo-api](https://todo-api-qabf.onrender.com/)
 
 ---
 
