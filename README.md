@@ -35,6 +35,7 @@ The base URL for the API is the live deployment URL mentioned above.
     "title": "Learn how to write a README",
     "description": "Practice using Markdown for project documentation."
 }
+```
 
 # Technology Stack
 
