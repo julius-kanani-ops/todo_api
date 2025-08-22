@@ -4,8 +4,10 @@
 import os # Make sure os is imported
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
+from flask_migrate import Migrate
 
 db = SQLAlchemy()
+migrate = Migrate()
 
 def create_app(): # We remove the config_class argument
     app = Flask(__name__)
@@ -16,6 +18,7 @@ def create_app(): # We remove the config_class argument
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
     db.init_app(app)
+    migrate.init_app(app, db)
 
     from .routes import main as main_blueprint
     app.register_blueprint(main_blueprint)
